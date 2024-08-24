@@ -17,9 +17,9 @@ router.get("/", (req, res) => {
   try {
     const decoded = jwt.verify(token, process.env.SECRET_KEY);
     if (decoded.isAdmin) {
-      res.send("you are admin");
+      res.render("dashboard");
     } else {
-      res.send("you are regular user");
+      res.render("user-feedback");
     }
   } catch (err) {
     res.status(500).redirect("/");
