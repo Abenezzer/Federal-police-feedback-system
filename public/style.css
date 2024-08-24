@@ -1,0 +1,27 @@
+:root {
+  --fed-bg-color: #0c2a4c;
+  --fed-color: #c8acd6;
+}
+body {
+  background-color: var(--fed-bg-color);
+  max-width: 100vw;
+}
+
+.fed-text-color {
+  color: var(--fed-color);
+}
+
+.fed-text-color-dark {
+  color: #0c2a4c;
+}
+
+.offcanvas-custom {
+  max-width: 250px;
+}
+
+#total-feedback {
+  top: 50px;
+  z-index: 200;
+  right: 200px;
+  color: var(--fed-bg-color);
+}
