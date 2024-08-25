@@ -1,7 +1,7 @@
 const express = require("express");
 require("dotenv").config();
 const { loginUser } = require("../controllers/userController");
-const authenticateToken = require("../middlewares/authenticateToken");
+
 const jwt = require("jsonwebtoken");
 
 const { dashboard } = require("../controllers/adminController");
@@ -17,7 +17,7 @@ router.get("/", (req, res) => {
   try {
     const decoded = jwt.verify(token, process.env.SECRET_KEY);
     if (decoded.isAdmin) {
-      res.render("dashboard");
+      res.redirect('/admin/overview');
     } else {
       res.render("user-feedback");
     }
@@ -29,6 +29,6 @@ router.post("/signup", (req, res) => {
   res.send("login");
 });
 router.post("/login", loginUser);
-router.get("/dashboard", authenticateToken, dashboard);
+
 
 module.exports = router;

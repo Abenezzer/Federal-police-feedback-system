@@ -2,6 +2,11 @@ const mongoose = require("mongoose");
 const Joi = require("joi");
 
 const userShcema = new mongoose.Schema({
+  name: {
+    type: String, 
+    required: true,
+
+  },
   username: {
     type: String,
     required: true,
@@ -19,11 +24,17 @@ const userShcema = new mongoose.Schema({
   },
 });
 
-const joiSchema = Joi.object({
+const joiLoginSchema = Joi.object({
   username: Joi.string().required(),
   password: Joi.string().required().min(6).max(30),
 });
+const joiRegisterSchema = Joi.object({
+  name: Joi.string().required(),
+  username: Joi.string().required(),
+  password: Joi.string().required().min(6).max(30),
+  confirmPassword: Joi.ref('password'),
+})
 
 const User = mongoose.model("user", userShcema);
 
-module.exports = { User, joiSchema };
+module.exports = { User, joiLoginSchema, joiRegisterSchema };

@@ -1,9 +1,9 @@
 require("dotenv").config();
-const { User, joiSchema } = require("../models/User");
+const { User, joiLoginSchema } = require("../models/User");
 const jwt = require("jsonwebtoken");
 
 const loginUser = async (req, res) => {
-  const { error} = joiSchema.validate(req.body);
+  const { error } = joiLoginSchema.validate(req.body);
   if (error === undefined) {
     const { username, password } = req.body;
     const user = await User.findOne({ username, password });
@@ -18,11 +18,13 @@ const loginUser = async (req, res) => {
         process.env.SECRET_KEY,
         { expiresIn: "1h" }
       );
-      res.cookie("token", token, {
-        httpOnly: true,
-        maxAge: 3600000,
-      });
-      res.status(200).send(`wellcome ${user.username}`);
+      res
+        .cookie("token", token, {
+          httpOnly: true,
+          maxAge: 3600000,
+        })
+        .status(200)
+        .redirect("/");
     }
   } else {
     const errMessage = error.details[0].message ?? null;

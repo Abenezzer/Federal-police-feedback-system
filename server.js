@@ -1,8 +1,10 @@
 const dotenv = require("dotenv");
 const mongoose = require("mongoose");
 const express = require("express");
-const router = require("./routes/routes");
+const userRoute = require("./routes/userRoutes");
+const adminRoute = require("./routes/adminRoute");
 const cookieParser = require("cookie-parser");
+const authenticateToken = require('./middlewares/authenticateToken');
 const app = express();
 
 // config
@@ -23,7 +25,7 @@ mongoose
   .catch((err) => console.log(err));
 
 // routers
-
-app.use(router);
+app.use("/admin",authenticateToken,  adminRoute);
+app.use(userRoute);
 
 app.listen(PORT, () => console.log(`Server Listing at PORT ${PORT}...`));
