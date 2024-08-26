@@ -1,6 +1,6 @@
 const express = require("express");
 require("dotenv").config();
-const { loginUser } = require("../controllers/userController");
+const { loginUser, logout } = require("../controllers/userController");
 
 const jwt = require("jsonwebtoken");
 
@@ -29,6 +29,7 @@ router.post("/signup", (req, res) => {
   res.send("login");
 });
 router.post("/login", loginUser);
+router.get('/logout', logout);
 
 
 module.exports = router;

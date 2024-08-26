@@ -76,17 +76,23 @@
               >
             </li>
             <li class="btn btn-primary">
-              <a class="text-decoration-none text-white active" href="/admin/add-product"
+              <a
+                class="text-decoration-none text-white active"
+                href="/admin/add-product"
                 >Add Product</a
               >
             </li>
             <li class="btn btn-primary">
-              <a class="text-decoration-none text-white active" href="/admin/manage-product"
+              <a
+                class="text-decoration-none text-white active"
+                href="/admin/manage-product"
                 >Mangage Product</a
               >
             </li>
             <li class="btn btn-danger">
-              <a class="text-decoration-none text-white" href="/logout">Logout</a>
+              <a class="text-decoration-none text-white" href="/logout"
+                >Logout</a
+              >
             </li>
           </ul>
         </div>
@@ -95,20 +101,16 @@
     <!-- Sidebar ends -->
 
     <section class="container my-3 text-white">
-      <h2 class="text-center display-6">Create User</h2>
+      <h2 class="text-center display-6">Add Product</h2>
       <div class="row justify-content-center">
-        <form action="/admin/register" method="POST" class="col-7 mx-auto">
+        <form action="/admin/add-product" method="POST" class="col-7 mx-auto">
           <% if (errMessage !== null) { %>
           <div class="alert bg-danger mb-2 p-1"><%= errMessage %></div>
-          <% } %> <% if (createdUser !== null) { %>
-          <div class="alert bg-info mb-2 p-1 fed-text-color-dark">
-            username: <%= createdUser.username %>
-          </div>
-          <div class="alert bg-info fed-text-color-dark mb-2 p-1">
-            password: <%= createdUser.password %>
+          <% } %> <% if (productCreated) { %>
+          <div class="alert bg-success mb-2 p-1">
+            Product Created Successfully
           </div>
           <% } %>
-
           <div class="mb-3">
             <label for="name" class="form-label">Name:</label>
             <input
@@ -120,41 +122,81 @@
             />
           </div>
           <div class="mb-3">
-            <label for="username" class="form-label">Username:</label>
+            <label for="Software-version" class="form-label"
+              >Software Version:
+            </label>
             <input
-              name="username"
+              name="version"
               type="text"
               class="form-control"
-              id="username"
-              placeholder="Username"
+              id="Software-version"
+              placeholder="Software Version"
             />
           </div>
 
-          <div class="row">
-            <div class="mb-3 col-6">
-              <label for="depPass" class="form-label">Password</label>
-              <input
-                type="password"
-                class="form-control"
-                id="depPass"
-                placeholder="Password"
-                name="password"
-              />
-            </div>
-            <div class="mb-3 col-6">
-              <label for="confirmPassword" class="form-label"
-                >Comfirm Password:</label
-              >
-              <input
-                type="password"
-                class="form-control"
-                id="depConfPassword"
-                placeholder="Confirm password"
-                name="confirmPassword"
-              />
+          <div class="mb-3">
+            <label for="description" class="form-label">description</label>
+            <textarea
+              name="description"
+              class="form-control"
+              id="description"
+              rows="3"
+              placeholder="Product description"
+            ></textarea>
+            <div class="m-2">
+              <h3 class="text-center display-6">Add Questions</h3>
+              <div class="mb-3">
+                <label for="question1" class="form-label">Question 1:</label>
+                <input
+                  required
+                  name="question1"
+                  type="text"
+                  class="form-control"
+                  id="question1"
+                  placeholder="Question 1"
+                />
+              </div>
+              <div class="mb-3">
+                <label for="question2" class="form-label">Question 2:</label>
+                <input
+                  required
+                  name="question2"
+                  type="text"
+                  class="form-control"
+                  id="question2"
+                  placeholder="Question 2"
+                />
+              </div>
+              <div class="mb-3">
+                <label for="question3" class="form-label">Question 3:</label>
+                <input
+                  required
+                  name="question3"
+                  type="text"
+                  class="form-control"
+                  id="question3"
+                  placeholder="Question 3"
+                />
+              </div>
+              <div class="mb-3">
+                <label for="question4" class="form-label">Question 4:</label>
+                <input
+                  required
+                  name="question4"
+                  type="text"
+                  class="form-control"
+                  id="question4"
+                  placeholder="Question 4"
+                />
+              </div>
             </div>
           </div>
-          <button type="submit" class="btn btn-lg btn-primary">Submit</button>
+
+          <div class="d-flex justify-content-center">
+            <button type="submit" class="btn btn-lg btn-primary mb-4">
+              Add Product
+            </button>
+          </div>
         </form>
       </div>
     </section>
