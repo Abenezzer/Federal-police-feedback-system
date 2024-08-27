@@ -1,6 +1,11 @@
 const express = require("express");
 require("dotenv").config();
-const { loginUser, logout } = require("../controllers/userController");
+const {
+  loginUser,
+  logout,
+  home,
+  getProductForm,
+} = require("../controllers/userController");
 
 const jwt = require("jsonwebtoken");
 
@@ -9,27 +14,13 @@ const { joiSchema } = require("../models/User");
 
 const router = express.Router();
 
-router.get("/", (req, res) => {
-  const token = req.cookies.token;
-  if (!token) {
-    res.render("home", { errMessage: null });
-  }
-  try {
-    const decoded = jwt.verify(token, process.env.SECRET_KEY);
-    if (decoded.isAdmin) {
-      res.redirect('/admin/overview');
-    } else {
-      res.render("user-feedback");
-    }
-  } catch (err) {
-    res.status(500).redirect("/");
-  }
-});
-router.post("/signup", (req, res) => {
-  res.send("login");
-});
+router.get("/", home);
 router.post("/login", loginUser);
-router.get('/logout', logout);
-
+router.get("/logout", logout);
+router.get("/get-question/:id", getProductForm);
+router.post("/review-product", (req, res) => {
+  console.log(req.body);
+  res.send("success");
+});
 
 module.exports = router;
