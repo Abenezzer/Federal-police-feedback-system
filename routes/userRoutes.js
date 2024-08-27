@@ -5,6 +5,7 @@ const {
   logout,
   home,
   getProductForm,
+  reviewProduct,
 } = require("../controllers/userController");
 
 const jwt = require("jsonwebtoken");
@@ -18,9 +19,6 @@ router.get("/", home);
 router.post("/login", loginUser);
 router.get("/logout", logout);
 router.get("/get-question/:id", getProductForm);
-router.post("/review-product", (req, res) => {
-  console.log(req.body);
-  res.send("success");
-});
+router.post("/review-product", reviewProduct);
 
 module.exports = router;

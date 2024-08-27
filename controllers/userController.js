@@ -16,8 +16,8 @@ const home = async (req, res) => {
     } else {
       const products = await Product.find();
       return res.render("user-feedback", {
-        errMessage: null,
         products: products,
+        success: false,
       });
     }
   } catch (err) {
@@ -70,8 +70,23 @@ const getProductForm = async (req, res) => {
   console.log(req.params.id + " make request");
   if (product) {
     const questions = product.questions;
-    res.render("feedback-form", { questions: questions });
+    res.render("feedback-form", { questions: questions, productId: productId });
   }
 };
 
-module.exports = { loginUser, logout, home, getProductForm };
+const reviewProduct = async (req, res) => {
+  const { productId } = req.body;
+
+  const product = await Product.findById(productId);
+  let feedback = {};
+  product.questions.forEach((question) => {
+    feedback["question"] = question._id;
+    feedback["response"] = req.body[question._id];
+    product.results.push(feedback);
+    feedback = {};
+  });
+  await product.save();
+  res.render("user-feedback", { products: null, success: true });
+};
+
+module.exports = { loginUser, logout, home, getProductForm, reviewProduct };

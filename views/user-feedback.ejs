@@ -83,14 +83,21 @@
       <section class="text-white">
         <h3 class="mb-3 display-6 text-center">Service Feedback Form</h3>
         <select class="form-select mb-3" id="user-select-system">
-          <option value="placeHolder" selected>Select the system you want to review</option>
-          <% products.forEach(function(product) { %>
+          <option value="placeHolder" selected>
+            Select the system you want to review
+          </option>
+          <% if(products !== null) { %> <% products.forEach(function(product) {
+          %>
           <option value="<%= product._id %>"><%= product.name %></option>
-          <% }); %>
+          <% }); %> <% } %>
         </select>
-        <div id="form-place">
-
+        <% if(success) { %>
+        <div class="p-3 mt-3 alert bg-success h5">
+          Thank you for your feedback! Your input is valuable and helps us
+          improve. We appreciate your time and support!
         </div>
+        <%}%>
+        <div id="form-place"></div>
       </section>
     </div>
 

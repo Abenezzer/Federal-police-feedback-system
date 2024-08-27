@@ -10,7 +10,7 @@
           required
           class="form-check-input"
           type="radio"
-          name="question_<%= question._id %>"
+          name="<%= question._id %>"
           value="poor"
           id="rad1_<%= question._id %>"
         />
@@ -25,7 +25,7 @@
           required
           class="form-check-input"
           type="radio"
-          name="question_<%= question._id %>"
+          name="<%= question._id %>"
           value="average"
           id="rad2_<%= question._id %>"
         />
@@ -40,7 +40,7 @@
           required
           class="form-check-input"
           type="radio"
-          name="question_<%= question._id %>"
+          name="<%= question._id %>"
           value="good"
           id="rad3_<%= question._id %>"
         />
@@ -55,7 +55,7 @@
           required
           class="form-check-input"
           type="radio"
-          name="question_<%= question._id %>"
+          name="<%= question._id %>"
           value="very-good"
           id="rad4_<%= question._id %>"
         />
@@ -66,6 +66,7 @@
     </div>
     <% }); %>
 
+    <input type="hidden" name="productId" value="<%= productId %>" />
     <div class="d-flex justify-content-center">
       <button class="btn text-center btn-lg btn-success mb-4" type="submit">
         Submit
