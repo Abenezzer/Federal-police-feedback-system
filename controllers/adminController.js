@@ -18,8 +18,9 @@ const registerPost = async (req, res) => {
       .status(400)
       .render("create-user", { errMessage: errMessage, createdUser: null });
   } else {
-    const user = User.findOne({ username: req.body.username });
+    let user = await User.findOne({ username: req.body.username });
     if (user) {
+      console.log(user);
       errMessage = "the username already exist!!!";
       return res
         .status(400)
@@ -33,7 +34,6 @@ const registerPost = async (req, res) => {
       .status(400)
       .render("create-user", { errMessage: null, createdUser: user });
   }
-  console.log(req.body);
 };
 
 const addProductGet = async (req, res) => {
@@ -74,6 +74,31 @@ const addProductPost = async (req, res) => {
     }
   }
 };
+
+const productResponse = async (req, res) => {
+  try {
+    const productId = req.params.productId;
+    const product = await Product.findById(productId)
+      .populate("results.question")
+      .exec();
+
+    if (!product) return res.status(404).send("Product not found.");
+
+    // Aggregate the responses
+    const responseAggregation = product.results.reduce(
+      (acc, result) => {
+        acc[result.response] += 1;
+        return acc;
+      },
+      { poor: 0, average: 0, good: 0, "very-good": 0 }
+    );
+
+    res.send(responseAggregation);
+  } catch (err) {
+    console.log(err);
+    res.status(500).send("Server error.");
+  }
+};
 module.exports = {
   dashboard,
   overview,
@@ -81,4 +106,5 @@ module.exports = {
   registerPost,
   addProductGet,
   addProductPost,
+  productResponse,
 };

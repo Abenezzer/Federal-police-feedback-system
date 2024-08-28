@@ -6,6 +6,7 @@ const {
   registerPost,
   addProductGet,
   addProductPost,
+  productResponse,
 } = require("../controllers/adminController");
 const authenticateToken = require("../middlewares/authenticateToken");
 const router = express.Router();
@@ -16,5 +17,6 @@ router.get("/register", registerGet);
 router.post("/register", registerPost);
 router.get("/add-product", addProductGet);
 router.post("/add-product", addProductPost);
+router.get("/product-responses/:productId", productResponse);
 
 module.exports = router;

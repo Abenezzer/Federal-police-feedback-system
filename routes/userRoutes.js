@@ -7,12 +7,6 @@ const {
   getProductForm,
   reviewProduct,
 } = require("../controllers/userController");
-
-const jwt = require("jsonwebtoken");
-
-const { dashboard } = require("../controllers/adminController");
-const { joiSchema } = require("../models/User");
-
 const router = express.Router();
 
 router.get("/", home);
@@ -20,5 +14,9 @@ router.post("/login", loginUser);
 router.get("/logout", logout);
 router.get("/get-question/:id", getProductForm);
 router.post("/review-product", reviewProduct);
+router.get("/back-home", (req, res) => {
+  console.log("back-home btn");
+  res.redirect("/");
+});
 
 module.exports = router;

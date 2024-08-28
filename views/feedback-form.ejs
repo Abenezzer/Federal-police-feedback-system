@@ -1,3 +1,8 @@
+<% if(success === -1) { %>
+<div class="p-3 mt-3 alert bg-success h5">
+  You have already Reviewed the Product.
+</div>
+<%} else { %>
 <form action="/review-product" method="POST">
   <div id="display-on-select">
     <% questions.forEach(function(question) { %>
@@ -74,3 +79,5 @@
     </div>
   </div>
 </form>
+
+<% }%>

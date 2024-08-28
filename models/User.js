@@ -3,9 +3,8 @@ const Joi = require("joi");
 
 const userShcema = new mongoose.Schema({
   name: {
-    type: String, 
+    type: String,
     required: true,
-
   },
   username: {
     type: String,
@@ -22,6 +21,7 @@ const userShcema = new mongoose.Schema({
     type: Boolean,
     default: false,
   },
+  reviewedProducts: [mongoose.Schema.Types.ObjectId],
 });
 
 const joiLoginSchema = Joi.object({
@@ -32,8 +32,8 @@ const joiRegisterSchema = Joi.object({
   name: Joi.string().required(),
   username: Joi.string().required(),
   password: Joi.string().required().min(6).max(30),
-  confirmPassword: Joi.ref('password'),
-})
+  confirmPassword: Joi.ref("password"),
+});
 
 const User = mongoose.model("user", userShcema);
 
