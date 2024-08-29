@@ -1,11 +1,14 @@
 const { User, joiRegisterSchema } = require("../models/User");
+const { Product, joiProductSchema } = require("../models/Product");
 const overview = async (req, res) => {
-  res.render("dashboard");
+  const products = await Product.find();
+  if (products) {
+    res.render("overview", { products: products });
+  }
 };
 const dashboard = async (req, res) => {
   res.send("you are admin");
 };
-const { Product, joiProductSchema } = require("../models/Product");
 
 const registerGet = async (req, res) => {
   res.render("create-user", { errMessage: null, createdUser: null });
@@ -75,30 +78,78 @@ const addProductPost = async (req, res) => {
   }
 };
 
+// controllers/productController.js
+
 const productResponse = async (req, res) => {
+  const productId = req.params.productId;
+
   try {
-    const productId = req.params.productId;
-    const product = await Product.findById(productId)
-      .populate("results.question")
-      .exec();
+    // Step 1: Fetch the product by ID
+    const product = await Product.findById(productId).exec();
 
-    if (!product) return res.status(404).send("Product not found.");
+    if (!product) {
+      return res.status(404).json({ message: "Product not found" });
+    }
 
-    // Aggregate the responses
-    const responseAggregation = product.results.reduce(
-      (acc, result) => {
-        acc[result.response] += 1;
-        return acc;
-      },
-      { poor: 0, average: 0, good: 0, "very-good": 0 }
-    );
+    const { questions, results } = product;
 
-    res.send(responseAggregation);
-  } catch (err) {
-    console.log(err);
-    res.status(500).send("Server error.");
+    // Check if there are questions available
+    if (!questions.length) {
+      return res
+        .status(400)
+        .json({ message: "No questions found for this product." });
+    }
+
+    // Step 2: Calculate total feedback submissions
+    const totalResults = results.length;
+    const numberOfQuestions = questions.length;
+    const totalFeedbacks = Math.floor(totalResults / numberOfQuestions);
+
+    // Optional: Check for incomplete submissions
+    const incompleteSubmissions = totalResults % numberOfQuestions;
+
+    if (incompleteSubmissions > 0) {
+      console.warn(
+        `There are ${incompleteSubmissions} incomplete responses detected. Total complete feedbacks counted: ${totalFeedbacks}`
+      );
+    }
+
+    // Step 3: Aggregate results by question
+    const aggregatedResults = questions.map((question) => {
+      // Initialize the response counters
+      const responseCounts = {
+        poor: 0,
+        average: 0,
+        good: 0,
+        "very-good": 0,
+      };
+
+      // Filter results for the current question and count responses
+      results.forEach((result) => {
+        if (result.question.toString() === question._id.toString()) {
+          responseCounts[result.response] += 1;
+        }
+      });
+
+      return {
+        question: question.text,
+        responses: responseCounts,
+      };
+    });
+
+    // Step 4: Send the response
+    return res.status(200).json({
+      totalFeedbacks,
+      aggregatedResults,
+    });
+  } catch (error) {
+    console.error("Error fetching product ratings:", error);
+    return res.status(500).json({ message: "Internal Server Error" });
   }
 };
+
+module.exports = { productResponse };
+
 module.exports = {
   dashboard,
   overview,

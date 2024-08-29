@@ -20,33 +20,6 @@
       type="text/javascript"
       src="https://www.gstatic.com/charts/loader.js"
     ></script>
-    <script type="text/javascript">
-      google.charts.load("current", { packages: ["bar"] });
-      google.charts.setOnLoadCallback(drawChart);
-
-      function drawChart() {
-        var data = google.visualization.arrayToDataTable([
-          ["questions", "poor", "average", "good", "verygood"],
-          ["Qestion 1", 1000, 400, 200, 400],
-          ["Qestion 2", 1170, 460, 250, 400],
-          ["Qestion 3", 660, 1120, 300, 400],
-          ["Qestion 4", 1030, 540, 350, 400],
-        ]);
-
-        var options = {
-          chart: {
-            title: "Federal Police feedback",
-            subtitle: "User Product feedback",
-          },
-        };
-
-        var chart = new google.charts.Bar(
-          document.getElementById("columnchart_material")
-        );
-
-        chart.draw(data, google.charts.Bar.convertOptions(options));
-      }
-    </script>
   </head>
   <body class="bg-light-subtle">
     <header class="w-100">
@@ -140,35 +113,44 @@
         </h2>
         <div class="overview-filter col-7 col-md-4 mb-1">
           <form action="/fiter" method="POST">
-            <select class="form-select" aria-label="Default select example">
-              <option selected>Filter overview by department</option>
-              <option value="1">One</option>
-              <option value="2">Two</option>
-              <option value="3">Three</option>
+            <select
+              id="select-system"
+              class="form-select"
+              aria-label="Default select example"
+            >
+              <option vlaue="-1" selected>Filter overview by department</option>
+              <% if(products !== null) { %> <%
+              products.forEach(function(product) { %>
+              <option value="<%= product._id %>"><%= product.name %></option>
+              <% }); %> <% } %>
             </select>
           </form>
         </div>
       </div>
     </div>
-    <body class="w-100">
-      <div class="container">
-        <div class="row justify-content-center position-relative">
-          <div class="text-center">
+    <div class="w-100">
+      <div class="container" id="display">
+        <div>
+          <div class="row justify-content-center position-relative">
+            <div class="text-center">
+              <div
+                class="mx-auto"
+                id="columnchart_material"
+                style="width: 800px; height: 500px"
+              ></div>
+            </div>
             <div
-              class="mx-auto"
-              id="columnchart_material"
-              style="width: 800px; height: 500px"
+              id="total-feedback"
+              class="col-2 position-absolute h5 text-nowrap mb-4"
             ></div>
           </div>
-          <div
-            id="total-feedback"
-            class="col-2 position-absolute h5 text-nowrap"
-          >
-            Total Feedback: 100
+          <div class="container " id="questions">
+            
           </div>
         </div>
       </div>
-    </body>
+    </div>
+    <script src="/graph.js"></script>
 
     <script
       src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
@@ -180,12 +162,5 @@
       integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy"
       crossorigin="anonymous"
     ></script>
-    <script>
-      document.addEventListener("DOMContentLoaded", function () {
-        var myOffcanvas = document.getElementById("offcanvasWithBothOptions");
-        var bsOffcanvas = new bootstrap.Offcanvas(myOffcanvas);
-        bsOffcanvas.show();
-      });
-    </script>
   </body>
 </html>
