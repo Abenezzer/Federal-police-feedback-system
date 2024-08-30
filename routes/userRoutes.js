@@ -15,7 +15,6 @@ router.get("/logout", logout);
 router.get("/get-question/:id", getProductForm);
 router.post("/review-product", reviewProduct);
 router.get("/back-home", (req, res) => {
-  console.log("back-home btn");
   res.redirect("/");
 });
 

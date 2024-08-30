@@ -5,7 +5,6 @@ const { isValidObjectId } = require("mongoose");
 const jwt = require("jsonwebtoken");
 
 const home = async (req, res) => {
-  console.log("calling a home controller");
   const token = req.cookies.token;
   if (!token) {
     return res.render("home", { errMessage: null });
@@ -36,7 +35,7 @@ const loginUser = async (req, res) => {
       res.status(400).render("home", { errMessage });
     } else {
       //   add jwt auth
-      console.log(user);
+
       const token = jwt.sign(
         { id: user._id, isAdmin: user.isAdmin },
         process.env.SECRET_KEY,
@@ -70,7 +69,6 @@ const logout = async (req, res) => {
 // get and review products
 
 const getProductForm = async (req, res) => {
-  console.log("make a form request");
   const productId = req.params.id;
   const { userId } = req.cookies;
   const user = await User.findById(userId);
@@ -82,10 +80,10 @@ const getProductForm = async (req, res) => {
     });
   }
   const product = await Product.findById(productId);
-  console.log(req.params.id + " make request");
+
   if (product) {
     const questions = product.questions;
-    console.log(questions);
+
     res.render("feedback-form", {
       questions: questions,
       productId: productId,
@@ -113,7 +111,6 @@ const reviewProduct = async (req, res) => {
     if (!user.reviewedProducts.includes(productId)) {
       // If not, add it to the array
       user.reviewedProducts.push(productId);
-      console.log(user);
       await user.save(); // Save the updated user document
     }
   }

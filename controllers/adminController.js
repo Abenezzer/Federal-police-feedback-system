@@ -23,7 +23,7 @@ const registerPost = async (req, res) => {
   } else {
     let user = await User.findOne({ username: req.body.username });
     if (user) {
-      console.log(user);
+      
       errMessage = "the username already exist!!!";
       return res
         .status(400)
@@ -148,6 +148,19 @@ const productResponse = async (req, res) => {
   }
 };
 
+const manageProduct = async (req, res) => {
+  const products = await Product.find();
+  if (products) {
+    res.render("manage-products", { products: products });
+  }
+};
+
+const deleteProduct = async (req, res) => {
+  const productId = req.params.productId;
+  const product = await Product.findByIdAndDelete(productId);
+  res.redirect("/admin/manage-product");
+};
+
 module.exports = { productResponse };
 
 module.exports = {
@@ -158,4 +171,6 @@ module.exports = {
   addProductGet,
   addProductPost,
   productResponse,
+  manageProduct,
+  deleteProduct,
 };

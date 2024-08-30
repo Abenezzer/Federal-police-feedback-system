@@ -4,7 +4,7 @@
   "description": "Ethiopian federal police feedback collection system for internal software product used by the commission.",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "node --watch server.js"
   },
   "keywords": [],
   "author": "",
