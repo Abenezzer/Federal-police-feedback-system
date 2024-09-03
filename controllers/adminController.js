@@ -23,7 +23,6 @@ const registerPost = async (req, res) => {
   } else {
     let user = await User.findOne({ username: req.body.username });
     if (user) {
-      
       errMessage = "the username already exist!!!";
       return res
         .status(400)
@@ -160,8 +159,52 @@ const deleteProduct = async (req, res) => {
   const product = await Product.findByIdAndDelete(productId);
   res.redirect("/admin/manage-product");
 };
+const listOfUsers = async (req, res) => {
+  const users = await User.find();
+  res.render("list-users", { users: users });
+};
 
-module.exports = { productResponse };
+const deleteUser = async (req, res) => {
+  const userId = req.params.userId;
+  const user = await User.findByIdAndDelete(userId);
+  res.redirect("/admin/list-users");
+};
+const updateUser = async (req, res) => {
+  const userId = req.params.userId;
+  const user = await User.findById(userId);
+  if (user) {
+    res.render("update-user", {
+      user: user,
+      errMessage: null,
+      createdUser: null,
+    });
+  }
+};
+
+const updateUserPost = async (req, res) => {
+  const user = await User.findById(req.body.userId);
+  const userObj = {
+    name: req.body.name,
+    username: req.body.username,
+    password: req.body.password,
+  };
+  const { error } = joiRegisterSchema.validate(userObj);
+  if (error) {
+    const errMessage = error.details[0].message ?? null;
+    return res.status(400).render("create-user", {
+      user: user,
+      errMessage: errMessage,
+      createdUser: null,
+    });
+  } else {
+    const updatedUser = await User.findByIdAndUpdate(
+      req.body.userId, // The ID of the document to update
+      userObj, // The update data
+      { new: true } // Return the updated document
+    );
+    res.redirect("/admin/list-users");
+  }
+};
 
 module.exports = {
   dashboard,
@@ -173,4 +216,8 @@ module.exports = {
   productResponse,
   manageProduct,
   deleteProduct,
+  listOfUsers,
+  deleteUser,
+  updateUser,
+  updateUserPost,
 };

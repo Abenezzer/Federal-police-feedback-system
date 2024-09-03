@@ -76,11 +76,6 @@
               >
             </li>
             <li class="btn btn-primary">
-                <a class="text-decoration-none text-white" href="/admin/list-users"
-                  >List of User</a
-                >
-              </li>
-            <li class="btn btn-primary">
               <a
                 class="text-decoration-none text-white active"
                 href="/admin/add-product"
@@ -106,20 +101,38 @@
     <!-- Sidebar ends -->
 
     <div class="container">
-      <div class="d-flex align-items-around flex-column text-white mb-5">
-        <div class="display-5 mb-3">Products</div>
-        <ul class="list-group">
-          <% if(products !== null) { %> <% products.forEach(function(product) {
-          %>
+      <div class="d-flex align-items-center flex-column text-white mb-5">
+        <div class="display-5 mb-3">List of Users</div>
+        <ul class="list-group gap-1">
+          <% if(users !== null) { %> <% users.forEach(function(user) { %>
           <li
-            class="list-group-item d-flex justify-content-between align-items-center"
+            style="max-width: 800px; min-width: 500px"
+            class="list-group-item card text-center"
           >
-            <span><%= product.name %></span>
-            <a
-              class="btn btn-danger"
-              href="/admin/delete-product/<%=product._id%>"
-              >Clear Data
-            </a>
+            <div class="card-body d-flex justify-content-center flex-column">
+              <div><span class="fs-5 me-2">Name:</span> <%= user.name %></div>
+              <hr />
+              <div>
+                <span class="fs-5 me-2">Username:</span> <%= user.username %>
+              </div>
+              <hr />
+              <div>
+                <span class="fs-5 me-2">Password: </span> <%= user.password %>
+              </div>
+              <hr />
+              <div>
+                <span class="fs-5 me-2">Is Admin: </span> <%= user.isAdmin %>
+              </div>
+              <hr />
+              <a
+                class="btn btn-warning mb-2"
+                href="/admin/update-user/<%=user._id%>"
+                >Update User
+              </a>
+              <a class="btn btn-danger" href="/admin/delete-user/<%=user._id%>"
+                >Delete User
+              </a>
+            </div>
           </li>
           <% }); %> <% } %>
         </ul>

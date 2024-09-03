@@ -15,13 +15,8 @@
       href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
     />
     <link rel="stylesheet" href="/style.css" />
-    <!-- chart component -->
-    <script
-      type="text/javascript"
-      src="https://www.gstatic.com/charts/loader.js"
-    ></script>
   </head>
-  <body class="bg-light-subtle">
+  <body>
     <header class="w-100">
       <div class="container-fluid">
         <div class="row">
@@ -37,6 +32,19 @@
         </div>
       </div>
     </header>
+    <!-- sidebar -->
+    <button
+      class="btn ms-5"
+      type="button"
+      data-bs-toggle="offcanvas"
+      data-bs-target="#offcanvasScrolling"
+      aria-controls="offcanvasScrolling"
+    >
+      <i
+        style="font-size: 35px; color: #fff"
+        class="bi bi-arrow-right-square-fill"
+      ></i>
+    </button>
     <div class="side-bar">
       <div
         class="offcanvas offcanvas-start offcanvas-custom p-0"
@@ -57,38 +65,38 @@
         </div>
         <div class="offcanvas-body">
           <ul class="list-unstyled w-100 d-flex flex-column gap-3">
-            <li class="btn btn-primary shadow-lg">
+            <li class="btn btn-primary">
               <a class="text-decoration-none text-white" href="/admin/overview"
                 >Overview</a
               >
             </li>
-            <li class="btn btn-primary shadow-lg">
+            <li class="btn btn-primary">
               <a class="text-decoration-none text-white" href="/admin/register"
                 >Create User</a
               >
             </li>
-            <li class="btn btn-primary shadow-lg">
+            <li class="btn btn-primary">
               <a
                 class="text-decoration-none text-white"
                 href="/admin/list-users"
                 >List of User</a
               >
             </li>
-            <li class="btn btn-primary shadow-lg">
+            <li class="btn btn-primary">
               <a
                 class="text-decoration-none text-white active"
                 href="/admin/add-product"
                 >Add Product</a
               >
             </li>
-            <li class="btn btn-primary shadow-lg">
+            <li class="btn btn-primary">
               <a
                 class="text-decoration-none text-white active"
                 href="/admin/manage-product"
                 >Mangage Product</a
               >
             </li>
-            <li class="btn btn-danger shadow-lg">
+            <li class="btn btn-danger">
               <a class="text-decoration-none text-white" href="/logout"
                 >Logout</a
               >
@@ -97,73 +105,77 @@
         </div>
       </div>
     </div>
-    <div class="container">
-      <div
-        class="row justify-content-center align-items-center my-3 border-bottom border-3"
-      >
-        <div class="sidebar-icon col-2">
-          <button
-            class="btn"
-            type="button"
-            data-bs-toggle="offcanvas"
-            data-bs-target="#offcanvasScrolling"
-            aria-controls="offcanvasScrolling"
-          >
-            <i
-              style="font-size: 35px; color: #0c2a4c"
-              class="bi bi-arrow-right-square-fill"
-            ></i>
-          </button>
-        </div>
-        <h2 class="col-8 col-md-5 text-center fed-text-color-dark">
-          Feedback Overview
-        </h2>
-        <div class="overview-filter col-7 col-md-4 mb-1">
-          <form action="/fiter" method="POST">
-            <select
-              id="select-system"
-              class="form-select"
-              aria-label="Default select example"
-            >
-              <option vlaue="-1" selected>Filter overview by department</option>
-              <% if(products !== null) { %> <%
-              products.forEach(function(product) { %>
-              <option value="<%= product._id %>"><%= product.name %></option>
-              <% }); %> <% } %>
-            </select>
-          </form>
-        </div>
-      </div>
-    </div>
-    <div class="w-100">
-      <div class="container" id="display">
-        <div>
-          <div class="row justify-content-center position-relative">
-            <div class="text-center">
-              <div
-                class="mx-auto"
-                id="columnchart_material"
-                style="width: 800px; height: 500px"
-              ></div>
-            </div>
-            <div
-              id="total-feedback"
-              class="col-2 position-absolute h5 text-nowrap mb-4"
-            ></div>
+    <!-- Sidebar ends -->
+
+    <section class="container my-3 text-white">
+      <h2 class="text-center display-6">Create User</h2>
+      <div class="row justify-content-center">
+        <form action="/admin/update-user" method="POST" class="col-7 mx-auto">
+          <% if (errMessage !== null) { %>
+          <div class="alert bg-danger mb-2 p-1"><%= errMessage %></div>
+          <% } %> <% if (createdUser !== null) { %>
+          <div class="alert bg-info mb-2 p-1 fed-text-color-dark">
+            username: <%= createdUser.username %>
           </div>
-          <div class="container" id="questions"></div>
-        </div>
+          <div class="alert bg-info fed-text-color-dark mb-2 p-1">
+            password: <%= createdUser.password %>
+          </div>
+          <% } %>
+
+          <div class="mb-3">
+            <input type="hidden" name="userId" value="<%=user._id%>" />
+            <label for="name" class="form-label">Name:</label>
+            <input
+              value="<%= user.name %>"
+              name="name"
+              type="text"
+              class="form-control"
+              id="name"
+              placeholder="Name"
+            />
+          </div>
+          <div class="mb-3">
+            <label for="username" class="form-label">Username:</label>
+            <input
+              value="<%=user.username%>"
+              name="username"
+              type="text"
+              class="form-control"
+              id="username"
+              placeholder="Username"
+            />
+          </div>
+
+          <div class="row">
+            <div class="mb-3 col-6">
+              <label for="depPass" class="form-label">Password</label>
+              <input
+                value="<%= user.password %>"
+                type="password"
+                class="form-control"
+                id="depPass"
+                placeholder="Password"
+                name="password"
+              />
+            </div>
+            <div class="mb-3 col-6">
+              <label for="confirmPassword" class="form-label"
+                >Comfirm Password:</label
+              >
+              <input
+                value="<%=user.password %>"
+                type="password"
+                class="form-control"
+                id="depConfPassword"
+                placeholder="Confirm password"
+                name="confirmPassword"
+              />
+            </div>
+          </div>
+          <button type="submit" class="btn btn-lg btn-primary">Submit</button>
+        </form>
       </div>
-    </div>
-    <script>
-      document.addEventListener("DOMContentLoaded", function () {
-        var offcanvasElement = document.getElementById("offcanvasScrolling");
-        var offcanvas = new bootstrap.Offcanvas(offcanvasElement);
-        // Show the offcanvas on page load
-        offcanvas.show();
-      });
-    </script>
-    <script src="/graph.js"></script>
+    </section>
 
     <script
       src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
